@@ -1,6 +1,6 @@
 # **rslidar_sdk**
 
- [中文介绍](README_CN.md) 
+ [中文介绍](README_CN.md)
 
 ## 1 Introduction
 
@@ -23,7 +23,7 @@
 
 ## 2 Download
 
-### 2.1 Download via Git 
+### 2.1 Download via Git
 
 Since rslidar_sdk project includes a submodule --- rs_driver, user needs to run the following commands after git clone to download the submodule properly.
 
@@ -44,7 +44,7 @@ Instead of using Git, user can also access [rslidar_sdk_release](https://github.
 
 ### 3.1 ROS
 
-To run rslidar_sdk in ROS environment, ROS related libraries need to be installed. 
+To run rslidar_sdk in ROS environment, ROS related libraries need to be installed.
 
 **Ubuntu 16.04**: ros-kinetic-desktop-full
 
@@ -58,12 +58,12 @@ If you install ros-kinetic-desktop-full/ros-melodic-desktop-full/ros-noetic-desk
 
 ### 3.2 ROS2
 
-If use rslidar_sdk in ROS2 environment, ROS2 related libraries need to be installed. 
+If use rslidar_sdk in ROS2 environment, ROS2 related libraries need to be installed.
 
 **Ubuntu 16.04**: Not supported
 
 **Ubuntu 18.04**: ROS2 eloquent desktop
-  
+
 **Installation**: please refer to https://index.ros.org/doc/ros2/Installation/Eloquent/Linux-Install-Debians/
 
 **Ubuntu 20.04**: ROS2 foxy desktop
@@ -76,7 +76,13 @@ If use rslidar_sdk in ROS2 environment, ROS2 related libraries need to be instal
 
 **Note! Please avoid installing ROS and ROS2 on the same computer! This may cause conflict! Also you may need to install Yaml manually.**
 
-### 3.3 Yaml(Essential) 
+### ROS Libraries (humble)
+
+```sh
+sudo apt install libpcl-conversions-dev ros-humble-pcl-ros
+```
+
+### 3.3 Yaml(Essential)
 
 version: >= v0.5.2
 
@@ -89,7 +95,7 @@ sudo apt-get update
 sudo apt-get install -y libyaml-cpp-dev
 ```
 
-### 3.4 Pcap(Essential) 
+### 3.4 Pcap(Essential)
 
 version: >=v1.7.4
 
@@ -117,7 +123,7 @@ We offer three ways to compile and run the driver.
 
 ### 4.1 Compile directly
 
- In this way, user can use ROS facilities(not ROS2) if ROS master node is launched in advance via ```roscore```. Also, rviz can be launched seperately for visualization. 
+ In this way, user can use ROS facilities(not ROS2) if ROS master node is launched in advance via ```roscore```. Also, rviz can be launched seperately for visualization.
 
 ```sh
 cd rslidar_sdk
@@ -180,7 +186,7 @@ ros2 launch rslidar_sdk start.py
 
 ## 5 Introduction to parameters
 
-This section is very important since all functions and features provided by rslidar_sdk is configured via parameter modification. So please read the following links carefully. 
+This section is very important since all functions and features provided by rslidar_sdk is configured via parameter modification. So please read the following links carefully.
 
 [Intro to parameters](doc/intro/parameter_intro.md)
 
@@ -206,8 +212,8 @@ The following documents are some quick guides for using some of the most common 
 
 [Multi-LiDARs](doc/howto/how_to_use_multi_lidars.md)
 
-[Switch Point Type](doc/howto/how_to_switch_point_type.md) 
+[Switch Point Type](doc/howto/how_to_switch_point_type.md)
 
-[Coordinate Transformation](doc/howto/how_to_use_coordinate_transformation.md) 
+[Coordinate Transformation](doc/howto/how_to_use_coordinate_transformation.md)
 
-[Multi-Cast](doc/howto/how_to_use_multi_cast_function.md) 
+[Multi-Cast](doc/howto/how_to_use_multi_cast_function.md)
