@@ -20,6 +20,7 @@ add_definitions(-DPROJECT_PATH="${PROJECT_SOURCE_DIR}")
 set(CMAKE_BUILD_TYPE RELEASE)
 add_definitions(-O3)
 add_definitions(-std=c++17)
+add_definitions(-DTREAT_WARNING_AS_ERROR=OFF)
 add_compile_options(-Wall)
 
 #========================
@@ -27,26 +28,27 @@ add_compile_options(-Wall)
 #========================
 #ROS#
 find_package(roscpp 1.12 QUIET)
-if(roscpp_FOUND)
-  message(=============================================================)
-  message("-- ROS Found, Ros Support is turned On!")
-  message(=============================================================)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/package_ros1.xml ${CMAKE_CURRENT_SOURCE_DIR}/package.xml COPYONLY)
-  add_definitions(-DROS_FOUND)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/package_ros1.xml ${CMAKE_CURRENT_SOURCE_DIR}/package.xml COPYONLY)
+# if(roscpp_FOUND)
+#   message(=============================================================)
+#   message("-- ROS Found, Ros Support is turned On!")
+#   message(=============================================================)
+#   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/package_ros1.xml ${CMAKE_CURRENT_SOURCE_DIR}/package.xml COPYONLY)
+#   add_definitions(-DROS_FOUND)
+#   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/package_ros1.xml ${CMAKE_CURRENT_SOURCE_DIR}/package.xml COPYONLY)
 
-  find_package(roslib QUIET)
-  include_directories(${roscpp_INCLUDE_DIRS} ${roslib_INCLUDE_DIRS})
-  set(ROS_LIBS ${roscpp_LIBRARIES} ${roslib_LIBRARIES})
+#   find_package(roslib QUIET)
+#   include_directories(${roscpp_INCLUDE_DIRS} ${roslib_INCLUDE_DIRS})
+#   set(ROS_LIBS ${roscpp_LIBRARIES} ${roslib_LIBRARIES})
 
-else(roscpp_FOUND)
-  message(=============================================================)
-  message("-- ROS Not Found, Ros Support is turned Off!")
-  message(=============================================================)
-endif(roscpp_FOUND)
+# else(roscpp_FOUND)
+#   message(=============================================================)
+#   message("-- ROS Not Found, Ros Support is turned Off!")
+#   message(=============================================================)
+# endif(roscpp_FOUND)
 
 #ROS2#
 find_package(rclcpp QUIET)
+find_package(rclcpp REQUIRED)
 if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
   message(=============================================================)
   message("-- ROS2 Found, Ros2 Support is turned On!")
@@ -105,25 +107,25 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 #Catkin#
-if(${COMPILE_METHOD} STREQUAL "CATKIN")
-  add_definitions(-DRUN_IN_ROS_WORKSPACE)
-  find_package(catkin REQUIRED
-    COMPONENTS
-      roscpp
-      sensor_msgs
-      roslib
-      pcl_ros
-      pcl_conversions
-  )
+# if(${COMPILE_METHOD} STREQUAL "CATKIN")
+#   add_definitions(-DRUN_IN_ROS_WORKSPACE)
+#   find_package(catkin REQUIRED
+#     COMPONENTS
+#       roscpp
+#       sensor_msgs
+#       roslib
+#       pcl_ros
+#       pcl_conversions
+#   )
 
-  catkin_package(
-    CATKIN_DEPENDS
-      roscpp
-      sensor_msgs
-      roslib
-      pcl_conversions
-  )
-endif(${COMPILE_METHOD} STREQUAL "CATKIN")
+#   catkin_package(
+#     CATKIN_DEPENDS
+#       roscpp
+#       sensor_msgs
+#       roslib
+#       pcl_conversions
+#   )
+# endif(${COMPILE_METHOD} STREQUAL "CATKIN")
 
 #Include directory#
 include_directories(${PROJECT_SOURCE_DIR}/src)
@@ -175,25 +177,35 @@ else(NOT PROTOC MATCHES "NOTFOUND" AND Protobuf_FOUND)
                       )
 endif(NOT PROTOC MATCHES "NOTFOUND" AND Protobuf_FOUND)
 
+# add_executable(rslidar_sdk_node
+#             node/rslidar_sdk_node.cpp
+#             src/manager/adapter_manager.cpp
+#             )
+# target_link_libraries(rslidar_sdk_node
+#                     ${PCL_LIBRARIES}
+#                     ${YAML_CPP_LIBRARIES}
+#                     ${rs_driver_LIBRARIES}
+#                     )
+
 #Ros#
-if(roscpp_FOUND)
-  target_link_libraries(rslidar_sdk_node ${ROS_LIBS})
-  if(${COMPILE_METHOD} STREQUAL "CATKIN")
-    install(TARGETS rslidar_sdk_node
-            RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-            LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-            ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
-    install(DIRECTORY launch/
-            DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-            PATTERN ".svn" EXCLUDE)
-    install(DIRECTORY config/
-            DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
-            PATTERN ".svn" EXCLUDE)
-    install(DIRECTORY rviz/
-            DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz
-            PATTERN ".svn" EXCLUDE)
-  endif()
-endif(roscpp_FOUND)
+# if(roscpp_FOUND)
+#   target_link_libraries(rslidar_sdk_node ${ROS_LIBS})
+#   if(${COMPILE_METHOD} STREQUAL "CATKIN")
+#     install(TARGETS rslidar_sdk_node
+#             RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#             LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#             ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+#     install(DIRECTORY launch/
+#             DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+#             PATTERN ".svn" EXCLUDE)
+#     install(DIRECTORY config/
+#             DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+#             PATTERN ".svn" EXCLUDE)
+#     install(DIRECTORY rviz/
+#             DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz
+#             PATTERN ".svn" EXCLUDE)
+#   endif()
+# endif(roscpp_FOUND)
 
 #Ros2#
 if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
@@ -203,8 +215,7 @@ if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
     std_msgs
     rslidar_msg
     pcl_ros
-    tf2_ros
-    tf2
+    pcl_conversions
   )
   install(TARGETS
     rslidar_sdk_node
