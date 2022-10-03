@@ -62,6 +62,7 @@ if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
   find_package(rslidar_msg REQUIRED)
   find_package(pcl_conversions REQUIRED)
   find_package(pcl_ros REQUIRED)
+  find_package(tf2 REQUIRED)
   find_package(Boost REQUIRED COMPONENTS regex)
   include_directories(${rclcpp_INCLUDE_DIRS})
 
@@ -196,7 +197,15 @@ endif(roscpp_FOUND)
 
 #Ros2#
 if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
-  ament_target_dependencies(rslidar_sdk_node rclcpp sensor_msgs std_msgs rslidar_msg)
+  ament_target_dependencies(rslidar_sdk_node
+    rclcpp
+    sensor_msgs
+    std_msgs
+    rslidar_msg
+    pcl_ros
+    tf2_ros
+    tf2
+  )
   install(TARGETS
     rslidar_sdk_node
     DESTINATION lib/${PROJECT_NAME}
