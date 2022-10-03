@@ -38,7 +38,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <pcl_ros/transforms.h>
+// #include <pcl_ros/transforms.h>
+#include <pcl_ros/transforms.hpp>
 #include "msg/rs_msg/lidar_point_cloud_msg.h"
 #include "msg/ros_msg/lidar_packet_ros.h"
 #include "msg/ros_msg/lidar_scan_ros.h"
