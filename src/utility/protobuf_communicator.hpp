@@ -329,14 +329,14 @@ public:
   template <typename T>
   bool sendSplitMsg(const T& msg)
   {
-    void* buf = malloc(msg.ByteSize() + SPLIT_SIZE);
-    msg.SerializeToArray(buf, msg.ByteSize());
-    int pkt_num = ceil(1.0 * msg.ByteSize() / SPLIT_SIZE);
+    void* buf = malloc(msg.ByteSizeLong() + SPLIT_SIZE);
+    msg.SerializeToArray(buf, msg.ByteSizeLong());
+    int pkt_num = ceil(1.0 * msg.ByteSizeLong() / SPLIT_SIZE);
     ProtoMsgHeader tmp_header;
     tmp_header.frame_num = msg.seq();
     tmp_header.msg_length = SPLIT_SIZE;
     tmp_header.total_msg_cnt = pkt_num;
-    tmp_header.total_msg_length = msg.ByteSize();
+    tmp_header.total_msg_length = msg.ByteSizeLong();
     for (int i = 0; i < pkt_num; i++)
     {
       tmp_header.msg_id = i;
@@ -359,7 +359,7 @@ public:
   bool sendSingleMsg(const T& msg)
   {
     ProtoMsgHeader tmp_header;
-    tmp_header.msg_length = msg.ByteSize();
+    tmp_header.msg_length = msg.ByteSizeLong();
     void* buf = malloc(tmp_header.msg_length);
     msg.SerializeToArray(buf, tmp_header.msg_length);
     if (sendProtoMsg(buf, tmp_header) == -1)
@@ -382,7 +382,7 @@ private:
     deadline_->async_wait(boost::bind(&ProtoCommunicator::checkDeadline, this));
   }
   static void handleReceive(const boost::system::error_code& ec, std::size_t length, boost::system::error_code* out_ec,
-                             std::size_t* out_length)
+                            std::size_t* out_length)
   {
     *out_ec = ec;
     *out_length = length;
