@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 cmake_policy(SET CMP0048 NEW)
 project(rslidar_sdk)
 
@@ -20,14 +20,13 @@ add_definitions(-DPROJECT_PATH="${PROJECT_SOURCE_DIR}")
 set(CMAKE_BUILD_TYPE RELEASE)
 add_definitions(-O3)
 add_definitions(-std=c++17)
-add_definitions(-DTREAT_WARNING_AS_ERROR=OFF)
 add_compile_options(-Wall)
 
 #========================
 # Dependencies Setup
 #========================
 #ROS#
-find_package(roscpp 1.12 QUIET)
+# find_package(roscpp 1.12 QUIET)
 # if(roscpp_FOUND)
 #   message(=============================================================)
 #   message("-- ROS Found, Ros Support is turned On!")
