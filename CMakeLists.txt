@@ -10,7 +10,7 @@ set(POINT_TYPE XYZI)
 #=======================================
 # Compile setup (ORIGINAL, CATKIN, COLCON)
 #=======================================
-set(COMPILE_METHOD CATKIN)
+set(COMPILE_METHOD COLCON)
 
 option(ENABLE_TRANSFORM "Enable transform functions" OFF)
 if(${ENABLE_TRANSFORM})
@@ -57,7 +57,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   add_definitions(-O3)
 endif()
 
-add_definitions(-std=c++14)
+add_definitions(-std=c++17)
 add_compile_options(-Wall)
 
 #========================
@@ -127,7 +127,7 @@ if(rclcpp_FOUND AND ${COMPILE_METHOD} STREQUAL "COLCON")
 
   add_definitions(-DROS2_FOUND)
   include_directories(${rclcpp_INCLUDE_DIRS})
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 
   find_package(ament_cmake REQUIRED)
   find_package(sensor_msgs REQUIRED)
