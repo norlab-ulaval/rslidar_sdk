@@ -112,10 +112,11 @@ int main(int argc, char** argv)
     RS_INFO << config_path << RS_REND;
     RS_INFO << "--------------------------------------------------------" << RS_REND;
   }
-  catch (...)
+  catch (const YAML::Exception& e)
   {
-    RS_ERROR << "The format of config file " << config_path << " is wrong. Please check (e.g. indentation)." << RS_REND;
-    return -1;
+      RS_ERROR << "Error loading the config file " << config_path << RS_REND;
+      RS_ERROR << "Exception: " << e.what() << RS_REND;
+      return -1;
   }
 
   std::shared_ptr<NodeManager> demo_ptr = std::make_shared<NodeManager>();
