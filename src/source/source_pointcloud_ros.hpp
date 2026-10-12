@@ -191,9 +191,13 @@ sensor_msgs::Imu toRosMsg(const std::shared_ptr<ImuData>& data, const std::strin
   imu_msg.angular_velocity.y = data->angular_velocity_y;
   imu_msg.angular_velocity.z = data->angular_velocity_z;
 
-  imu_msg.linear_acceleration.x = data->linear_acceleration_x;
-  imu_msg.linear_acceleration.y = data->linear_acceleration_y;
-  imu_msg.linear_acceleration.z = data->linear_acceleration_z;
+  // The decoder reports acceleration in g; sensor_msgs/Imu expects m/s^2
+  const double g = 9.80665;
+  imu_msg.linear_acceleration.x = data->linear_acceleration_x * g;
+  imu_msg.linear_acceleration.y = data->linear_acceleration_y * g;
+  imu_msg.linear_acceleration.z = data->linear_acceleration_z * g;
+  // No orientation estimate (REP-145)
+  imu_msg.orientation_covariance[0] = -1.0;
   return imu_msg;
 }
 #endif
@@ -420,9 +424,13 @@ sensor_msgs::msg::Imu toRosMsg(const std::shared_ptr<ImuData>& data, const std::
   imu_msg.angular_velocity.y = data->angular_velocity_y;
   imu_msg.angular_velocity.z = data->angular_velocity_z;
 
-  imu_msg.linear_acceleration.x = data->linear_acceleration_x;
-  imu_msg.linear_acceleration.y = data->linear_acceleration_y;
-  imu_msg.linear_acceleration.z = data->linear_acceleration_z;
+  // The decoder reports acceleration in g; sensor_msgs/Imu expects m/s^2
+  const double g = 9.80665;
+  imu_msg.linear_acceleration.x = data->linear_acceleration_x * g;
+  imu_msg.linear_acceleration.y = data->linear_acceleration_y * g;
+  imu_msg.linear_acceleration.z = data->linear_acceleration_z * g;
+  // No orientation estimate (REP-145)
+  imu_msg.orientation_covariance[0] = -1.0;
   return imu_msg;
 }
 #endif
